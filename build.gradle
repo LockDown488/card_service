@@ -2,7 +2,10 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.liquibase.gradle' version '2.2.0'
 }
+
+apply plugin: 'org.liquibase.gradle'
 
 group = 'ru.kopanev.spring'
 version = '0.0.1-SNAPSHOT'
@@ -35,8 +38,24 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.17.2'
+    liquibaseRuntime 'org.postgresql:postgresql:42.6.0'
+    liquibaseRuntime 'ch.qos.logback:logback-core:1.2.3'
+    liquibaseRuntime 'ch.qos.logback:logback-classic:1.4.11'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+liquibase {
+    activities {
+        main {
+            changeLogFile 'src/main/db/changelog/db.changelog-master.yaml'
+            url 'jdbc:postgresql://localhost:5430/postgres_db'
+            username 'postgres_user'
+            password 'postgres_password'
+            classpath '$rootDir'
+        }
+    }
 }

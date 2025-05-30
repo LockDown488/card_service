@@ -21,12 +21,12 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "card_id")
+    @JoinColumn(name = "card_id", nullable = false)
     private Card card;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDate timestamp;
 }

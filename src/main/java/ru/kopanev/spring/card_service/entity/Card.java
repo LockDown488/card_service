@@ -35,7 +35,7 @@ public class Card {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User owner;
+    private User user;
 
     @Column(nullable = false)
     private LocalDate expiryDate;
@@ -44,10 +44,10 @@ public class Card {
     @Column(name = "card_status", nullable = false)
     private CardStatus status;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
 
-    @Column(name = "daily_limit")
+    @Column(name = "daily_limit", precision = 19, scale = 2)
     private BigDecimal dailyLimit;
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
