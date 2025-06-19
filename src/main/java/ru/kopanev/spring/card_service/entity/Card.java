@@ -13,6 +13,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.context.annotation.Lazy;
 import ru.kopanev.spring.card_service.converter.CardNumberConverter;
 import ru.kopanev.spring.card_service.enums.CardStatus;
 
@@ -23,6 +29,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "card")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Card {
 
     @Id
