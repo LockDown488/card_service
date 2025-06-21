@@ -2,7 +2,7 @@ package ru.kopanev.spring.card_service.dto.card;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import ru.kopanev.spring.card_service.dto.user.UserReadDto;
+import ru.kopanev.spring.card_service.dto.user.UserSimpleDto;
 import ru.kopanev.spring.card_service.enums.CardStatus;
 
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ public class CardEditDto {
 
     private Long id;
     private String cardNumber;
-    private UserReadDto user;
+    private UserSimpleDto user;
     private LocalDate expiryDate;
     private CardStatus status;
     private BigDecimal dailyLimit;

@@ -1,33 +1,64 @@
 package ru.kopanev.spring.card_service.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.MappingTarget;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import ru.kopanev.spring.card_service.dto.card.CardCreateDto;
 import ru.kopanev.spring.card_service.dto.card.CardEditDto;
 import ru.kopanev.spring.card_service.dto.card.CardReadDto;
 import ru.kopanev.spring.card_service.entity.Card;
-import ru.kopanev.spring.card_service.entity.Transaction;
-import ru.kopanev.spring.card_service.entity.User;
 
-import java.util.List;
+@Component
+@RequiredArgsConstructor
+public class CardMapper {
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {UserMapper.class, TransactionMapper.class})
-public interface CardMapper {
+    private final SimpleDtoMapper simpleDtoMapper;
 
-    @Mapping(target = "user", ignore = true)
-    @Mapping(target = "transactions", ignore = true)
-    Card toEntity(CardReadDto dto);
+    public Card toEntity(CardCreateDto dto) {
+        if ( dto == null ) {
+            return null;
+        }
 
-    CardReadDto toDto(Card entity);
+        return Card.builder()
+                .cardNumber(dto.getCardNumber())
+                .expiryDate(dto.getExpiryDate())
+                .status(dto.getStatus())
+                .build();
+    }
 
-    Card update(CardEditDto dto, @MappingTarget Card entity);
+    public CardReadDto toDto(Card entity) {
+        if ( entity == null ) {
+            return null;
+        }
 
-    default Card toFullEntity(CardReadDto dto, User user, List<Transaction> transactions) {
-        Card card = toEntity(dto);
-        card.setUser(user);
-        card.setTransactions(transactions);
-        return card;
+        return CardReadDto.builder()
+                .id(entity.getId())
+                .cardNumber(entity.getCardNumber())
+                .user(simpleDtoMapper.toUserSimpleDto(entity.getUser()))
+                .expiryDate(entity.getExpiryDate())
+                .status(entity.getStatus())
+                .balance(entity.getBalance())
+                .dailyLimit(entity.getDailyLimit())
+                .transactions(simpleDtoMapper.toTransactionSimpleDto(entity.getTransactions()))
+                .build();
+    }
+
+    public Card update(CardEditDto source, Card target) {
+        if ( source == null ) {
+            return target;
+        }
+
+        if ( source.getExpiryDate() != null ) {
+            target.setExpiryDate(source.getExpiryDate());
+        }
+
+        if ( source.getStatus() != null ) {
+            target.setStatus(source.getStatus());
+        }
+
+        if ( source.getDailyLimit() != null ) {
+            target.setDailyLimit(source.getDailyLimit());
+        }
+
+        return target;
     }
 }

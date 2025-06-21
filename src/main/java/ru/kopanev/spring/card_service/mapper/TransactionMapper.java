@@ -1,24 +1,38 @@
 package ru.kopanev.spring.card_service.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.kopanev.spring.card_service.dto.transaction.TransactionDto;
-import ru.kopanev.spring.card_service.entity.Card;
 import ru.kopanev.spring.card_service.entity.Transaction;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface TransactionMapper {
+@Component
+@RequiredArgsConstructor
+public class TransactionMapper {
 
-    @Mapping(target = "card", ignore = true)
-    Transaction toEntity(TransactionDto dto);
+    private final SimpleDtoMapper simpleDtoMapper;
 
-    @Mapping(source = "card.id", target = "cardId")
-    TransactionDto toDto(Transaction entity);
+    public Transaction toEntity(TransactionDto dto) {
+        if ( dto == null ) {
+            return null;
+        }
 
-    default Transaction toEntityWithCard(TransactionDto dto, Card card) {
-        Transaction transaction = toEntity(dto);
-        transaction.setCard(card);
-        return transaction;
+        return Transaction.builder()
+                .id(dto.getId())
+                .amount(dto.getAmount())
+                .timestamp(dto.getTimestamp())
+                .build();
+    }
+
+    public TransactionDto toDto(Transaction entity) {
+        if ( entity == null ) {
+            return null;
+        }
+
+        return TransactionDto.builder()
+                .id(entity.getId())
+                .card(simpleDtoMapper.toCardSimpleDto(entity.getCard()))
+                .amount(entity.getAmount())
+                .timestamp(entity.getTimestamp())
+                .build();
     }
 }

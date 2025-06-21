@@ -1,17 +1,17 @@
-package ru.kopanev.spring.card_service.dto.card;
+package ru.kopanev.spring.card_service.filter;
 
 import lombok.Data;
-import ru.kopanev.spring.card_service.dto.user.UserReadDto;
 import ru.kopanev.spring.card_service.enums.CardStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class CardCreateDto {
+public class CardFilter {
 
-    private String cardNumber;
     private Long userId;
     private LocalDate expiryDate;
     private CardStatus status;
+    private BigDecimal dailyLimit;
 
 }

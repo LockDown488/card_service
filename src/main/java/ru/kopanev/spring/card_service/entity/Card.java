@@ -45,7 +45,7 @@ public class Card {
     private String cardNumber;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(nullable = false)

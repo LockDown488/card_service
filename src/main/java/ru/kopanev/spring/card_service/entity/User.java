@@ -10,8 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.context.annotation.Lazy;
 import ru.kopanev.spring.card_service.enums.Role;
 
@@ -22,6 +21,9 @@ import java.util.List;
 @Table(name = "user")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
