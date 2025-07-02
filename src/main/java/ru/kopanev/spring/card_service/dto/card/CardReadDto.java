@@ -22,6 +22,7 @@ public class CardReadDto {
     private CardStatus status;
     private BigDecimal balance;
     private BigDecimal dailyLimit;
+    private Boolean isBlockRequested;
     private List<TransactionSimpleDto> transactions;
 
     @JsonIgnore

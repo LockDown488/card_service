@@ -61,6 +61,9 @@ public class Card {
     @Column(name = "daily_limit", precision = 19, scale = 2)
     private BigDecimal dailyLimit;
 
+    @Column(name = "is_block_requested", nullable = false)
+    private Boolean isBlockRequested = false;
+
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions = new ArrayList<>();
 }

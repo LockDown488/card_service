@@ -17,6 +17,7 @@ public class CardEditDto {
     private LocalDate expiryDate;
     private CardStatus status;
     private BigDecimal dailyLimit;
+    private Boolean isBlockRequested;
 
     @JsonIgnore
     public void setId(Long id) {

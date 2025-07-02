@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import ru.kopanev.spring.card_service.dto.transaction.TransactionDto;
 import ru.kopanev.spring.card_service.entity.Transaction;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class TransactionMapper {
@@ -34,5 +36,11 @@ public class TransactionMapper {
                 .amount(entity.getAmount())
                 .timestamp(entity.getTimestamp())
                 .build();
+    }
+
+    public List<TransactionDto> toTransactionDtos(List<Transaction> entities) {
+        return entities.stream()
+                .map(this::toDto)
+                .toList();
     }
 }

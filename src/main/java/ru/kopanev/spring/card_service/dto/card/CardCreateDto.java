@@ -1,7 +1,6 @@
 package ru.kopanev.spring.card_service.dto.card;
 
 import lombok.Data;
-import ru.kopanev.spring.card_service.dto.user.UserReadDto;
 import ru.kopanev.spring.card_service.enums.CardStatus;
 
 import java.time.LocalDate;

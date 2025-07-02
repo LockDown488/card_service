@@ -7,6 +7,8 @@ import ru.kopanev.spring.card_service.dto.card.CardEditDto;
 import ru.kopanev.spring.card_service.dto.card.CardReadDto;
 import ru.kopanev.spring.card_service.entity.Card;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class CardMapper {
@@ -38,6 +40,7 @@ public class CardMapper {
                 .status(entity.getStatus())
                 .balance(entity.getBalance())
                 .dailyLimit(entity.getDailyLimit())
+                .isBlockRequested(entity.getIsBlockRequested())
                 .transactions(simpleDtoMapper.toTransactionSimpleDto(entity.getTransactions()))
                 .build();
     }
@@ -59,6 +62,16 @@ public class CardMapper {
             target.setDailyLimit(source.getDailyLimit());
         }
 
+        if ( source.getIsBlockRequested() != null) {
+            target.setIsBlockRequested(source.getIsBlockRequested());
+        }
+
         return target;
+    }
+
+    public List<CardReadDto> toCardReadDtos(List<Card> entities) {
+        return entities.stream()
+                .map(this::toDto)
+                .toList();
     }
 }

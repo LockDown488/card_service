@@ -17,7 +17,6 @@ import ru.kopanev.spring.card_service.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final CardService cardService;
     private final UserMapper userMapper;
 
     @Transactional

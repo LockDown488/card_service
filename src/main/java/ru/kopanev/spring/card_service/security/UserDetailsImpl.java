@@ -53,4 +53,8 @@ public class UserDetailsImpl implements UserDetails {
     public static UserDetails build(User user) {
         return new UserDetailsImpl(user);
     }
+
+    public Long getId() {
+        return user.getId();
+    }
 }
