@@ -20,32 +20,32 @@ import ru.kopanev.spring.card_service.mapper.TransactionMapper;
 import ru.kopanev.spring.card_service.repository.CardRepository;
 import ru.kopanev.spring.card_service.repository.specification.CardSpecification;
 import ru.kopanev.spring.card_service.security.UserDetailsImpl;
+import ru.kopanev.spring.card_service.utils.CardNumberGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class CardService {
 
-    private static final Random RANDOM = new Random();
     private static final long EXPIRED_TIME = 5;
 
     private final CardRepository cardRepository;
     private final UserService userService;
     private final CardMapper cardMapper;
     private final TransactionMapper transactionMapper;
+    private final CardNumberGenerator cardNumberGenerator;
 
     @Transactional
     public CardReadDto createCard(Long userId) {
         User user = userService.findUserById(userId);
-        String cardNumber = generateCardNumber();
+        String cardNumber = cardNumberGenerator.generateCardNumber();
 
         while (cardRepository.existsByCardNumber(cardNumber)) {
-            cardNumber = generateCardNumber();
+            cardNumber = cardNumberGenerator.generateCardNumber();
         }
 
         LocalDate expiryDate = LocalDate.now().plusYears(EXPIRED_TIME);
@@ -172,15 +172,5 @@ public class CardService {
         }
 
         return transactionMapper.toTransactionDtos(card.getTransactions());
-    }
-
-    private String generateCardNumber() {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (int i = 0; i < 10; i++) {
-            stringBuilder.append(RANDOM.nextInt(10));
-        }
-
-        return stringBuilder.toString();
     }
 }
