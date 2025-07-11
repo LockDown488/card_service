@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import ru.kopanev.spring.card_service.dto.card.CardEditDto;
 import ru.kopanev.spring.card_service.dto.card.CardReadDto;
 import ru.kopanev.spring.card_service.dto.transaction.TransactionDto;
+import ru.kopanev.spring.card_service.dto.user.UserReadDto;
 import ru.kopanev.spring.card_service.entity.Card;
 import ru.kopanev.spring.card_service.entity.Transaction;
 import ru.kopanev.spring.card_service.entity.User;
@@ -494,6 +495,21 @@ class CardServiceTest {
 
         verify(cardRepository).findAll(any(Specification.class), eq(pageable));
         verify(cardMapper).toDto(card);
+    }
+
+    @Test
+    void getCards_emptyList() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Card> emptyPage = new PageImpl<>(List.of(), pageable, 0);
+
+        when(cardRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(emptyPage);
+
+        Page<CardReadDto> result = cardService.getCards(filter, pageable);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(cardRepository).findAll(any(Specification.class), eq(pageable));
+        verify(cardMapper, never()).toDto(any(Card.class));
     }
 
     @Test

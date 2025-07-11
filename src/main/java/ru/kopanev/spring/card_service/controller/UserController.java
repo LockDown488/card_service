@@ -26,7 +26,6 @@ import java.util.List;
 public class UserController {
 
     private final CardService cardService;
-    private final UserService userService;
 
     @GetMapping("/cards")
     public List<CardReadDto> getCards(@AuthenticationPrincipal UserDetailsImpl userDetails) {

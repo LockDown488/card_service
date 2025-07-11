@@ -18,8 +18,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.annotation.Lazy;
-import ru.kopanev.spring.card_service.converter.CardNumberConverter;
+import ru.kopanev.spring.card_service.utils.CardNumberConverter;
 import ru.kopanev.spring.card_service.enums.CardStatus;
 
 import java.math.BigDecimal;
