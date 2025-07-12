@@ -1,0 +1,76 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="1" author="lockdown">
+        <createTable tableName="user">
+            <column autoIncrement="true" name="id" type="serial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="varchar(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="card">
+            <column autoIncrement="true" name="id" type="serial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="card_number" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="user_id" type="serial">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiry_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_status" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="balance" type="decimal(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="daily_limit" type="decimal(19, 2)"/>
+        </createTable>
+        <createTable tableName="transaction">
+            <column autoIncrement="true" name="id" type="serial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="card_id" type="serial">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="decimal(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="timestamp" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex tableName="card" indexName="idx_card_user_id">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="transaction" indexName="idx_transaction_card_id">
+            <column name="card_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="card" baseColumnNames="user_id" constraintName="fk_card_user" referencedTableName="user"
+                                 referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="card_id" constraintName="fk_transaction_card"
+                                 referencedTableName="card"
+                                 referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE"/>
+        <rollback>
+            <dropAllForeignKeyConstraints baseTableName="card"/>
+            <dropAllForeignKeyConstraints baseTableName="transaction"/>
+            <dropIndex tableName="card" indexName="idx_card_user_id"/>
+            <dropIndex tableName="transaction" indexName="idx_transaction_card_id"/>
+            <dropTable tableName="transaction"/>
+            <dropTable tableName="card"/>
+            <dropTable tableName="user"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
