@@ -1,5 +1,6 @@
 package ru.kopanev.spring.card_service.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +33,7 @@ public class AdminController {
     }
 
     @PutMapping("/cards/update")
-    public ResponseEntity<CardReadDto> updateCard(@RequestBody CardEditDto cardEditDto) {
+    public ResponseEntity<CardReadDto> updateCard(@RequestBody @Valid CardEditDto cardEditDto) {
         return ResponseEntity.ok(cardService.updateCard(cardEditDto));
     }
 
@@ -73,7 +74,7 @@ public class AdminController {
     }
 
     @PutMapping("/users/update")
-    public ResponseEntity<UserReadDto> updateUser(@RequestBody UserEditDto  userEditDto) {
+    public ResponseEntity<UserReadDto> updateUser(@RequestBody @Valid UserEditDto  userEditDto) {
         return ResponseEntity.ok(userService.updateUser(userEditDto));
     }
 
